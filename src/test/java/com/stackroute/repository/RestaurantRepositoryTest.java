@@ -1,11 +1,13 @@
 package com.stackroute.repository;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +21,7 @@ import com.stackroute.domain.Restaurant;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { RepositoryConfiguration.class })
-public class RestaurantRepositoryTests {
+public class RestaurantRepositoryTest {
 
 	RestaurantRepository restaurantRepository;
 
@@ -32,23 +34,28 @@ public class RestaurantRepositoryTests {
 
 	@Before
 	public void setUp() {
-		if (restaurantRepository.count() == 0) {
-			Restaurant restaurant = new Restaurant();
-			String jsonStr = "{\"restaurantName\":\"The Black Pearl\",\"restaurantLoc\":\"Kormangala\",\"costOfTwo\":\"1200.00\"}";
 
-			Gson gson = new Gson();
-			restaurant = gson.fromJson(jsonStr, Restaurant.class);
-			restaurants.add(restaurant);
+		Restaurant restaurant = new Restaurant();
+		String jsonStr = "{\"restaurantId\":\"1\",\"restaurantName\":\"The Black Pearl\",\"restaurantLocation\":\"Kormangala\",\"costOfTwo\":\"1200\"}";
 
-			jsonStr = "{\"restaurantName\":\"Echoes\",\"restaurantLoc\":\"Kormangala\",\"costOfTwo\":\"2400.00\"}";
+		Gson gson = new Gson();
+		restaurant = gson.fromJson(jsonStr, Restaurant.class);
+		restaurants.add(restaurant);
 
-			restaurant = gson.fromJson(jsonStr, Restaurant.class);
-			restaurants.add(restaurant);
-			restaurantRepository.save(restaurants.get(0));
-			restaurantRepository.save(restaurants.get(1));
-			System.out.println("before " + restaurants);
-		}
+		jsonStr = "{\"restaurantId\":\"2\",\"restaurantName\":\"Echoes\",\"restaurantLocation\":\"Kormangala\",\"costOfTwo\":\"2400.00\"}";
+
+		restaurant = gson.fromJson(jsonStr, Restaurant.class);
+		restaurants.add(restaurant);
+		restaurantRepository.save(restaurants.get(0));
+		restaurantRepository.save(restaurants.get(1));
+		System.out.println("before " + restaurants);
+
 		// System.out.println(restaurants);
+	}
+
+	@After
+	public void tearDown() {
+		restaurantRepository.deleteAll();
 	}
 
 	@Test
@@ -62,9 +69,10 @@ public class RestaurantRepositoryTests {
 			}
 		}
 
-		System.out.println("find costoftwo" + restaurants);
-
-		assertEquals(restaurantsCopyForCostOfTwo, restaurantRepository.findByCostOfTwo(new BigDecimal(1200.00)));
+		// System.out.println("find costoftwo" + restaurants);
+		// System.out.println(restaurantsCopyForCostOfTwo);
+		// System.out.println(restaurantRepository.findAll());
+		assertEquals(restaurantsCopyForCostOfTwo, restaurantRepository.findAllByCostOfTwo(new BigDecimal(1200)));
 
 	}
 
@@ -73,7 +81,7 @@ public class RestaurantRepositoryTests {
 
 		// Arrange
 		Restaurant restaurant;
-		String jsonStr = "{\"restaurantName\":\"The Black Pearl\",\"restaurantLoc\":\"Kormangala\",\"costOfTwo\":\"1200.00\"}";
+		String jsonStr = "{\"restaurantName\":\"The Black earl\",\"restaurantLocation\":\"Kormangala\",\"costOfTwo\":\"1300.00\"}";
 		Gson gson = new Gson();
 		restaurant = gson.fromJson(jsonStr, Restaurant.class);
 
@@ -84,7 +92,7 @@ public class RestaurantRepositoryTests {
 		long newRowCount = restaurantRepository.count();
 		restaurants.add(restaurant);
 
-		System.out.println("add " + restaurants);
+		// System.out.println("add " + restaurants);
 
 		// Assert
 		assertEquals("New Restaurant Added!", newRowCount, rowCount + 1);
@@ -96,23 +104,23 @@ public class RestaurantRepositoryTests {
 
 		// Arrange
 		Restaurant restaurant;
-		String jsonStr = "{\"restaurantId\":\"1\",\"restaurantName\":\"The Black Pearl\",\"restaurantLoc\":\"Kormangala\",\"costOfTwo\":\"1200.00\"}";
+		String jsonStr = "{\"restaurantId\":\"1\",\"restaurantName\":\"The Black Pearl\",\"restaurantLocation\":\"Kormangala\",\"costOfTwo\":\"1200\"}";
 		Gson gson = new Gson();
 		restaurant = gson.fromJson(jsonStr, Restaurant.class);
 		restaurant.setRestaurantId(1);
 		restaurantRepository.save(restaurant);
 		System.out.println("find one" + restaurants);
 		// System.out.println(restaurantRepository.findAll());
-		assertEquals("Restaurant Not Found", restaurant, restaurantRepository.findOne(1));
+		assertEquals("Restaurant Not Found", restaurant, restaurantRepository.findByRestaurantId(1));
 
 	}
 
-	// @Test
-	// public final void testFindAll() {
-	// System.out.println("find all" + restaurants);
-	// assertEquals(restaurants, restaurantRepository.findAll());
-	//
-	// }
+	@Test
+	public final void testFindAll() {
+		System.out.println("find all" + restaurants);
+		assertEquals(restaurants, restaurantRepository.findAll());
+
+	}
 
 	@Test
 	public final void testDeleteID() {
@@ -122,13 +130,14 @@ public class RestaurantRepositoryTests {
 		// Act
 		long rowCount = restaurantRepository.count();
 		restaurants.remove(restaurantRepository.findOne(0));
-		restaurantRepository.delete(0);
-		long newRowCount = restaurantRepository.count();
+		restaurantRepository.deleteByRestaurantId(1);
 
-		System.out.println("add " + restaurants);
+		long newRowCount = restaurantRepository.count();
+		System.out.println(rowCount);
+		System.out.println(newRowCount);
 
 		// Assert
-		assertEquals("Restaurant Deleted!", newRowCount, rowCount - 1);
+		assertTrue("restaurant Deleted!", newRowCount < rowCount);
 
 		System.out.println("delete " + restaurants);
 		//

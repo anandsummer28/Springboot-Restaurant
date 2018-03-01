@@ -10,10 +10,10 @@ import com.stackroute.domain.Restaurant;
 
 @Repository
 public interface RestaurantRepository extends MongoRepository<Restaurant, Integer> {
+	public List<Restaurant> findAllByCostOfTwo(BigDecimal costOfTwo);
 
-	public List<Restaurant> findByCostOfTwo(BigDecimal costOfTwo);
+	public void deleteByRestaurantId(int restaurantId);
 
-	public void deleteByCostOfTwo(BigDecimal costOfTwo);
+	public Restaurant findByRestaurantId(int restaurantID);
 
-	public void deleteByRestaurantIdAndCostOfTwo(int restaurantId, BigDecimal costOfTwo);
 }

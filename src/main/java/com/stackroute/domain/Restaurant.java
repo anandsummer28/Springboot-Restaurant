@@ -10,15 +10,51 @@ import org.springframework.data.mongodb.core.mapping.Document;
 //import javax.persistence.GenerationType;
 //import javax.persistence.Id;
 
-@Document(collection = "Restaurant")
+@Document
 public class Restaurant {
 
-	@Id
-	// @GeneratedValue(strategy = GenerationType.AUTO)
+	//
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private int restaurantId;
+	@Id
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	private String restaurantName;
-	private String restaurantLoc;
+	private String restaurantLocation;
 	private BigDecimal costOfTwo;
+
+	public String getRestuarantName() {
+		return restaurantName;
+	}
+
+	public int getRestaurantId() {
+		return restaurantId;
+	}
+
+	public void setRestaurantId(int restuarantId) {
+		this.restaurantId = restuarantId;
+	}
+
+	public void setRestaurantName(String restuarantName) {
+		this.restaurantName = restuarantName;
+	}
+
+	public String getRestaurantLocation() {
+		return restaurantLocation;
+	}
+
+	public void setRestaurantLocaton(String restaurantLocation) {
+		this.restaurantLocation = getRestaurantLocation();
+	}
 
 	public BigDecimal getCostOfTwo() {
 		return costOfTwo;
@@ -28,34 +64,10 @@ public class Restaurant {
 		this.costOfTwo = costOfTwo;
 	}
 
-	public String getRestaurantLoc() {
-		return restaurantLoc;
-	}
-
-	public void setRestaurantLoc(String restaurantLoc) {
-		this.restaurantLoc = restaurantLoc;
-	}
-
-	public int getRestaurantId() {
-		return restaurantId;
-	}
-
-	public void setRestaurantId(int restaurantId) {
-		this.restaurantId = restaurantId;
-	}
-
-	public String getRestaurantName() {
-		return restaurantName;
-	}
-
-	public void setRestaurantName(String restaurantName) {
-		this.restaurantName = restaurantName;
-	}
-
 	@Override
 	public String toString() {
-		return "Restaurant [restaurantId=" + restaurantId + ", restaurantName=" + restaurantName + ", restaurantLoc="
-				+ restaurantLoc + ", costOfTwo=" + costOfTwo + "]";
+		return "Restaurant [restaurantId=" + restaurantId + ", id=" + id + ", restaurantName=" + restaurantName
+				+ ", restaurantLocation=" + restaurantLocation + ", costOfTwo=" + costOfTwo + "]";
 	}
 
 	@Override
@@ -64,7 +76,7 @@ public class Restaurant {
 		int result = 1;
 		result = prime * result + ((costOfTwo == null) ? 0 : costOfTwo.hashCode());
 		result = prime * result + restaurantId;
-		result = prime * result + ((restaurantLoc == null) ? 0 : restaurantLoc.hashCode());
+		result = prime * result + ((restaurantLocation == null) ? 0 : restaurantLocation.hashCode());
 		result = prime * result + ((restaurantName == null) ? 0 : restaurantName.hashCode());
 		return result;
 	}
@@ -85,10 +97,10 @@ public class Restaurant {
 			return false;
 		if (restaurantId != other.restaurantId)
 			return false;
-		if (restaurantLoc == null) {
-			if (other.restaurantLoc != null)
+		if (restaurantLocation == null) {
+			if (other.restaurantLocation != null)
 				return false;
-		} else if (!restaurantLoc.equals(other.restaurantLoc))
+		} else if (!restaurantLocation.equals(other.restaurantLocation))
 			return false;
 		if (restaurantName == null) {
 			if (other.restaurantName != null)
