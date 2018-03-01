@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.google.gson.Gson;
 import com.stackroute.configuration.RepositoryConfiguration;
 import com.stackroute.domain.Restaurant;
-import com.stackroute.repository.RestaurantRepository;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = { RepositoryConfiguration.class })
@@ -108,12 +107,12 @@ public class RestaurantRepositoryTests {
 
 	}
 
-	@Test
-	public final void testFindAll() {
-		System.out.println("find all" + restaurants);
-		assertEquals(restaurants, restaurantRepository.findAll());
-
-	}
+	// @Test
+	// public final void testFindAll() {
+	// System.out.println("find all" + restaurants);
+	// assertEquals(restaurants, restaurantRepository.findAll());
+	//
+	// }
 
 	@Test
 	public final void testDeleteID() {
